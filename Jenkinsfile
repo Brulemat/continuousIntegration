@@ -7,13 +7,13 @@ node {
         env.PATH = "${tool 'maven35'}/bin:${env.PATH}"
     }
     stage ('Build') {
-        echoBlue('Début')
+        echoBlue('Start')
+        echoRed(getReleaseID())
 
         continuousIntegration {
             gitUrl = 'https://github.com/Brulemat/continuousIntegration.git'
             credentialsId = 'brulemat-github'
         }
-        echoRed(getReleaseID())
     }
 }
 

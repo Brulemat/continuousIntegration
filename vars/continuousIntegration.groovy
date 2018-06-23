@@ -37,7 +37,7 @@ def call(Closure context) {
             ])
         }
         stage('build') {
-            sh ('mvn clean package')
+            bat ('mvn clean package')
         }
         stage('release') {
             // 1. Git flow release
