@@ -1,5 +1,6 @@
 #!groovy
-Library('continuousIntegration')
+//noinspection GroovyUnusedAssignment
+@Library('continuousIntegration') _
 
 node {
     stage ('Initialize') {
