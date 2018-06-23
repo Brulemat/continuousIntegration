@@ -1,6 +1,6 @@
 #!groovy
 @Library('continuousIntegration')
-import java.lang.Object
+import fr.brulemat.util.Color
 
 node {
     stage ('Initialize') {
