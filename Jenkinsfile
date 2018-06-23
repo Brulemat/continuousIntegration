@@ -10,7 +10,8 @@ node {
         echoBlue('Start')
         echo "${env.WORKSPACE}\\pom.xml"
         if (fileExists("${env.WORKSPACE}\\pom.xml")) {
-            echo readFile(path)
+            echo readFile("${env.WORKSPACE}\\pom.xml")
+            echo readFile("${env.WORKSPACE}\\pom.xml") =~ '<version>(.+)</version>'
             //echoRed(getReleaseID())
         }
         continuousIntegration {
