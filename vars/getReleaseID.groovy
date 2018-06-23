@@ -1,9 +1,13 @@
 import fr.brulemat.ReleaseIDGenerator
 
-import static java.io.File.separator
-
 def call() {
-    def pom = readFile(env.WORKSPACE + separator + "pom.xml")
+    def pom = readFile("pom.xml")
     def generator = new ReleaseIDGenerator(this)
     return generator.generate(pom)
+}
+
+def getProjectVersion() {
+    def file = readFile('pom.xml')
+    def project = new XmlSlurper().parseText(file)
+    return project.version.text()
 }

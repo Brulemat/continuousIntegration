@@ -1,7 +1,4 @@
 #!/usr/bin/env groovy
-
-// fr/brulemat/GlobalVars.groovy
-// /vars/continuousIntegration.groovy
 def call(Closure context) {
     // création d'un map
     def config = [:]
@@ -10,6 +7,14 @@ def call(Closure context) {
     context.delegate = config
     // appeler la closure
     context()
+
+    if (env.getEnvironment().containsKey('BRANCH')) {
+        config['BRANCH']=BRANCH
+    }
+    if (env.getEnvironment().containsKey('RELEASE')) {
+        config['RELEASE']=true
+    }
+
     // commencer son workflow
     node {
         stage('clean') {
@@ -37,9 +42,10 @@ def call(Closure context) {
             ])
         }
         stage('build') {
-            bat ('mvn clean package')
+            sh ('mvn clean package')
         }
         stage('release') {
+
             // 1. Git flow release
             // 2. Push nexus OSS // etc...
         }
