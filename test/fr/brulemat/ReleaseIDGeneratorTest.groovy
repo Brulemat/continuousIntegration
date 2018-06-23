@@ -14,9 +14,9 @@ class ReleaseIDGeneratorTest extends GroovyTestCase {
         ]
 
         @SuppressWarnings("GroovyUnusedDeclaration")
-        def readFile(versionFilename) {
-            this.requestedVersionFilename = versionFilename
-            return this.version
+        def readFile(file) {
+            this.requestedVersionFilename = file
+            return "<project ><version>${this.version}</version></project>"
         }
 
         MasterPipelineScript(version) {
@@ -36,7 +36,7 @@ class ReleaseIDGeneratorTest extends GroovyTestCase {
 
         def returnedReleaseID = new ReleaseIDGenerator(pipeline).generate()
 
-        assert 'VERSION' == pipeline.requestedVersionFilename
+        assert 'pom.xml' == pipeline.requestedVersionFilename
         assert expectedReleaseID == returnedReleaseID
     }
 }
