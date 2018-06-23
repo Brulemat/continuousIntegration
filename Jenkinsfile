@@ -9,13 +9,14 @@ node {
     stage ('Build') {
         echoBlue('Start')
         echo "${env.WORKSPACE}\\pom.xml"
-        echo "==>"fileExists("${env.WORKSPACE}\\pom.xml")
-        echoRed(getReleaseID())
-
+        if (fileExists("${env.WORKSPACE}\\pom.xml")) {
+            echoRed(getReleaseID())
+        }
         continuousIntegration {
             gitUrl = 'https://github.com/Brulemat/continuousIntegration.git'
             credentialsId = 'brulemat-github'
         }
+
     }
 }
 
