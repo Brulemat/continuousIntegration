@@ -1,5 +1,6 @@
 package fr.brulemat
 
+import static java.io.File.separator
 
 class ReleaseIDGenerator {
     /**
@@ -21,7 +22,7 @@ class ReleaseIDGenerator {
 
     @SuppressWarnings("GroovyAssignabilityCheck")
     def version() {
-        def path = "${script.env.WORKSPACE}\\pom.xml"
+        def path = script.env.WORKSPACE + separator + "pom.xml"
         def matcher = script.readFile(path) =~ '<version>(.+)</version>'
         def version = matcher ? matcher[0][1] : null
         return version
