@@ -13,7 +13,7 @@ class ReleaseIDGenerator {
     def generate(pom) {
         def version = version(pom)
         def buildID = script.env.BUILD_ID
-        def shortSha = script.env.GIT_COMMIT.take(7)
+        def shortSha = script.env.GIT_COMMIT == null ? script.env.GIT_COMMIT.take(7) : ''
 
         return "${version}+b${buildID}.${shortSha}"
     }

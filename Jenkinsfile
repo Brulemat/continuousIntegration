@@ -9,6 +9,7 @@ node {
     }
     stage ('Build') {
         echoBlue('Start')
+        echoBlue(env.GIT_COMMIT)
         echo "${env.WORKSPACE}\\pom.xml"
         if (fileExists(env.WORKSPACE+"\\"+"pom.xml")) {
 //            echo readFile("${env.WORKSPACE}\\pom.xml")
