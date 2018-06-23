@@ -35,9 +35,9 @@ class ReleaseIDGeneratorTest extends GroovyTestCase {
         def shortSha = pipeline.env.GIT_COMMIT.take(7)
         def expectedReleaseID = "${version}+b${pipeline.env.BUILD_ID}.${shortSha}"
 
-        def returnedReleaseID = new ReleaseIDGenerator(pipeline).generate()
+        def returnedReleaseID = new ReleaseIDGenerator(pipeline).generate("<project ><version>${version}</version></project>")
 
-        assert '.\\pom.xml' == pipeline.requestedFilename
+//        assert '.\\pom.xml' == pipeline.requestedFilename
         assert expectedReleaseID == returnedReleaseID
     }
 }

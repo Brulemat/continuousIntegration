@@ -11,8 +11,8 @@ node {
         echo "${env.WORKSPACE}\\pom.xml"
         if (fileExists("${env.WORKSPACE}\\pom.xml")) {
             echo readFile("${env.WORKSPACE}\\pom.xml")
-            echo readFile("${env.WORKSPACE}\\pom.xml") =~ '<version>(.+)</version>'
-            //echoRed(getReleaseID())
+            //echo readFile("${env.WORKSPACE}\\pom.xml") =~ '<version>(.+)</version>'
+            echoRed(getReleaseID())
         }
         continuousIntegration {
             gitUrl = 'https://github.com/Brulemat/continuousIntegration.git'
