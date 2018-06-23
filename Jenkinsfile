@@ -9,6 +9,7 @@ node {
     stage ('Build') {
         echoBlue('Start')
         echo "${env.WORKSPACE}\\pom.xml"
+        echo "==>"fileExists("${env.WORKSPACE}\\pom.xml")
         echoRed(getReleaseID())
 
         continuousIntegration {
