@@ -6,16 +6,17 @@ class ReleaseIDGeneratorTest extends GroovyTestCase {
     // a script that's running against the master branch.
     class MasterPipelineScript {
         def version = ""
-        def requestedVersionFilename = ""
+        def requestedFilename = ""
 
         def env = [
                 'BUILD_ID'  : 15,
-                'GIT_COMMIT': 'a3bb4b7f9bf5db1c436b96a970c04d553feed1c5'
+                'GIT_COMMIT': 'a3bb4b7f9bf5db1c436b96a970c04d553feed1c5',
+                'WORKSPACE' : '.'
         ]
 
         @SuppressWarnings("GroovyUnusedDeclaration")
         def readFile(file) {
-            this.requestedVersionFilename = file
+            this.requestedFilename = file
             return "<project ><version>${this.version}</version></project>"
         }
 
@@ -36,7 +37,7 @@ class ReleaseIDGeneratorTest extends GroovyTestCase {
 
         def returnedReleaseID = new ReleaseIDGenerator(pipeline).generate()
 
-        assert 'pom.xml' == pipeline.requestedVersionFilename
+        assert '.\\pom.xml' == pipeline.requestedFilename
         assert expectedReleaseID == returnedReleaseID
     }
 }
