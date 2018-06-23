@@ -9,7 +9,12 @@ node {
 
     }
     stage ('Build') {
-        echo Color.red("essai")
+        echo Color.red('Texte Rouge')
+        echoBlue('Texte bleu')
+        continuousIntegration {
+            gitUrl = 'https://github.com/Brulemat/continuousIntegration.git'
+            credentialsId = 'brulemat-github'
+        }
     }
 }
 
