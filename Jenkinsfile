@@ -1,20 +1,18 @@
 #!groovy
-@Library('continuousIntegration')
-import fr.brulemat.util.Color
+Library('continuousIntegration')
 
 node {
     stage ('Initialize') {
-//        env.PATH = "${tool 'maven35'}/bin:${env.PATH}"
-        checkout scm
-
+        env.PATH = "${tool 'maven35'}/bin:${env.PATH}"
     }
     stage ('Build') {
-        echo Color.red('Texte Rouge')
-        echoBlue('Texte bleu')
+        echoBlue('Début')
+
         continuousIntegration {
             gitUrl = 'https://github.com/Brulemat/continuousIntegration.git'
             credentialsId = 'brulemat-github'
         }
+        echoRed(getReleaseID())
     }
 }
 
