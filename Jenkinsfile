@@ -2,6 +2,7 @@
 //noinspection GroovyUnusedAssignment
 @Library('continuousIntegration') _
 
+
 node {
     stage ('Initialize') {
         env.PATH = "${tool 'maven35'}/bin:${env.PATH}"
@@ -9,8 +10,8 @@ node {
     stage ('Build') {
         echoBlue('Start')
         echo "${env.WORKSPACE}\\pom.xml"
-        if (fileExists("${env.WORKSPACE}\\pom.xml")) {
-            echo readFile("${env.WORKSPACE}\\pom.xml")
+        if (fileExists(${env.WORKSPACE}+File.separator+"pom.xml")) {
+//            echo readFile("${env.WORKSPACE}\\pom.xml")
             //echo readFile("${env.WORKSPACE}\\pom.xml") =~ '<version>(.+)</version>'
             echoRed(getReleaseID())
         }
