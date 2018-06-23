@@ -1,4 +1,6 @@
 #!groovy
+@Library('continuousIntegration')
+import fr.brulemat.util.Color
 
 node {
     stage ('Initialize') {
@@ -7,6 +9,7 @@ node {
 
     }
     stage ('Build') {
+        Color.red("essai")
     }
 }
 
