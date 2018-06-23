@@ -21,7 +21,7 @@ class ReleaseIDGenerator {
 
     @SuppressWarnings("GroovyAssignabilityCheck")
     def version() {
-        def matcher = script.readFile('pom.xml') =~ '<version>(.+)</version>'
+        def matcher = script.readFile("${script.env.WORKSPACE}\\pom.xml") =~ '<version>(.+)</version>'
         def version = matcher ? matcher[0][1] : null
         return version
     }
