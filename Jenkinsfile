@@ -8,7 +8,7 @@ node {
     }
     stage ('Build') {
         echoBlue('Start')
-        echo "${script.env.WORKSPACE}\\pom.xml"
+        echo "${env.WORKSPACE}\\pom.xml"
         echoRed(getReleaseID())
 
         continuousIntegration {
