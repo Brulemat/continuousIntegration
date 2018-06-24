@@ -19,7 +19,7 @@ class ReleaseIDGenerator {
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
-    def version(pom) {
+    static def version(pom) {
         def matcher = pom =~ '<version>(.+)</version>'
         def version = matcher ? matcher[0][1] : null
         return version

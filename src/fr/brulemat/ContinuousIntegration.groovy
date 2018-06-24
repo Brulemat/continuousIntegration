@@ -1,26 +1,25 @@
 package fr.brulemat
 
-class ContinuousIntegration {
-    def config
+import fr.brulemat.util.Maven
 
-    ContinuousIntegration(Map config) {
-        this.config = config
+class ContinuousIntegration implements Serializable {
+    def script
+    Configuration config
 
-        if (config['BRANCH'] == null) {
-            config['BRANCH'] = 'master';
-        }
-        if (config['RELEASE'] == null) {
-            config['RELEASE'] = false;
-        }
+    ContinuousIntegration(script) {
+        this.script = script
+        this.config = new Configuration()
     }
 
-    String go() {
+    void config(conf) {
+        this.config.release = (this.script.env.RELEASE == 'true')
+        this.config.branch = this.script.env.BRANCH_NAME
+        this.config.tool = conf['tool']
+    }
 
-        node() {
-            stage('clean') {
-                deleteDir()
-            }
-        }
+    String build() {
+        new Maven(script, this.config.tool).mvn("clean package")
+
         return "ok"
     }
 }

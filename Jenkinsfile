@@ -1,20 +1,10 @@
 #!groovy
 //noinspection GroovyUnusedAssignment
-@Library('continuousIntegration') _
+@Library('continuousIntegration@develop') _
 
-continuousIntegration {
-    gitUrl = 'https://github.com/Brulemat/continuousIntegration.git'
-    credentialsId = 'brulemat-github'
-}
-//node {
-//    stage ('Initialize') {
-//        env.PATH = "${tool 'maven35'}/bin:${env.PATH}"
-//    }
-//    stage ('Build') {
-//
-//
-//    }
-//}
+continuousIntegration ({
+    [tool='maven35']
+})
 
 //def libraryFromLocalRepo() {
     // Workaround for loading the current repo as shared build lib.

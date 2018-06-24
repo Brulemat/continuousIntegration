@@ -1,4 +1,6 @@
 #!/usr/bin/env groovy
+import fr.brulemat.ContinuousIntegration
+
 def call(Closure context) {
     // création d'un map
     def config = [:]
@@ -8,32 +10,16 @@ def call(Closure context) {
     // appeler la closure
     context()
 
-    if (env.getEnvironment().containsKey('BRANCH')) {
-        config['BRANCH']=BRANCH
-    }
-    if (env.getEnvironment().containsKey('RELEASE')) {
-        config['RELEASE']=true
-    }
-
+    ContinuousIntegration ic = new ContinuousIntegration(this)
     // commencer son workflow
     node {
-        stage('clean') {
-            deleteDir()
-        }
-        stage('checkout') {
-            def branch = 'master'
-            if (env.getEnvironment().containsKey('BRANCH')) {
-                branch = BRANCH
-            }
-            git branch: branch, credentialsId: config.credentialsId, url: config.gitUrl
+        stage('init') {
+            ic.config(config)
         }
         stage('configure') {
-            def branches = "master\ndevelop"
-            // récupérer automatiquement les branches via un script sh git
             //noinspection GroovyAssignabilityCheck
             properties([
                     parameters([
-                            choice(choices: branches, description: 'Branche de build', name: 'BRANCH'),
                             booleanParam(defaultValue: false, description: 'Faire une release', name: 'RELEASE')
                     ]),
                     disableConcurrentBuilds(),
@@ -42,7 +28,7 @@ def call(Closure context) {
             ])
         }
         stage('build') {
-            sh ('mvn clean package')
+            ic.build()
         }
         stage('release') {
 
