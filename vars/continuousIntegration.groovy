@@ -29,9 +29,10 @@ def call(Closure context) {
         }
         stage('build') {
             ic.build()
+            ic.testIntegration()
         }
         stage('release') {
-
+            ic.release()
             // 1. Git flow release
             // 2. Push nexus OSS // etc...
         }
