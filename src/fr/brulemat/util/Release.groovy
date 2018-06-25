@@ -2,26 +2,33 @@ package fr.brulemat.util;
 
 class Release implements Serializable {
     def script
+    String releaseVersion
+    String nextVersion
 
     Release(script) {
         this.script = script
     }
 
     def maven(Maven mvn) {
-        String releaseVersion = mvn.extractVersion()
-        if (releaseVersion.length() >= 9 && releaseVersion.substring(releaseVersion.length() - 9).equals('-SNAPSHOT')) {
-            releaseVersion = releaseVersion.substring(0, releaseVersion.length() - 9)
+        defineVersion(mvn.extractVersion())
+        gitRelease()
+    }
+
+    def defineVersion(String currentVersion) {
+        if (currentVersion.length() >= 9 && currentVersion.substring(currentVersion.length() - 9).equals('-SNAPSHOT')) {
+            releaseVersion = currentVersion.substring(0, currentVersion.length() - 9)
         }
         String[] version = releaseVersion.tokenize(".")
         version[version.length - 2] = version[version.length - 2].toInteger() + 1
         version[version.length - 1] = 0
-        String nextVersion = version.join('.').concat('-SNAPSHOT')
-        return maven(mvn, releaseVersion, nextVersion)
+        nextVersion = version.join('.').concat('-SNAPSHOT')
+
+        script.sh("echo release Version: ${releaseVersion}")
+        script.sh("echo next Version: ${nextVersion}")
     }
 
-    def maven(Maven mvn, releaseVersion, nextVersion) {
-        script.sh("echo releaseVersion: ${releaseVersion}")
-        script.sh("echo nextVersion: ${nextVersion}")
+    def gitRelease() {
+
     }
 
     def scripted() {
@@ -30,7 +37,7 @@ class Release implements Serializable {
 export GIT_MERGE_AUTOEDIT=no
 
 # existe-t-il déjà une release
-if [ "$(git branch | grep release/$version)" == "" ]; then
+if [ "$(git branch | grep staging/$version)" == "" ]; then
 
     git flow release start $version
     if [ $? -gt 0 ]; then

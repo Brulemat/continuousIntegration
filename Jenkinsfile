@@ -3,6 +3,6 @@
 //noinspection GroovyUnusedAssignment
 @Library('continuousIntegration') _
 
-continuousIntegration ({
-    [tool='maven35']
-})
+continuousIntegration (
+    {['tool': 'maven35']}
+)

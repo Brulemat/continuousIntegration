@@ -14,7 +14,7 @@ def call(Closure context) {
     // commencer son workflow
     node {
         stage('init') {
-            ic.config(config)
+            ic.config(context)
         }
         stage('configure') {
             //noinspection GroovyAssignabilityCheck
@@ -29,12 +29,23 @@ def call(Closure context) {
         }
         stage('build') {
             ic.build()
-            ic.testIntegration()
         }
-        stage('release') {
-            ic.release()
-            // 1. Git flow release
-            // 2. Push nexus OSS // etc...
+        if (ic.isAskDeploymentIntegration()) {
+            stage('integration') {
+                ic.deploiementIntegration()
+                ic.testIntegration()
+            }
+        }
+        if (ic.isAskRelease()) {
+            stage('release') {
+                ic.release()
+            }
+        }
+        if (ic.isAskDeploymentProduction()) {
+            stage('deployment prod') {
+
+                ic.deploiementProduction()
+            }
         }
     }
 }

@@ -15,9 +15,22 @@ class ContinuousIntegration implements Serializable {
     }
 
     void config(conf) {
-        this.config.release = (this.script.env.RELEASE == 'true')
+        this.config.release = (this.script.env.RELEASE == "true")
         this.config.branch = this.script.env.BRANCH_NAME
-        this.config.tool = conf['tool']
+        script.sh "echo ${conf}"
+        conf.inject(this.config) { Configuration attributes, attr ->
+            def object = attr.call()
+            if (object['tool'] instanceof String) {
+                attributes.setTool(object['tool'] as String)
+            }
+            if (object['deploymentIntegration'] instanceof Boolean) {
+                attributes.setDeploymentIntegration(object['deploymentIntegration'] as Boolean)
+            }
+            if (object['deploymentProd'] instanceof Boolean) {
+                attributes.setDeploymentProd(object['deploymentProd'] as Boolean)
+            }
+            return attributes
+        }
 
         maven = new Maven(this.script, this.config.tool)
     }
@@ -28,15 +41,40 @@ class ContinuousIntegration implements Serializable {
         return "ok"
     }
 
+    boolean isAskDeploymentIntegration() {
+        return config.deploymentIntegration
+    }
+
+    boolean isAskRelease() {
+        return config.release
+    }
+
+    boolean isAskDeploymentProduction() {
+        return config.deploymentProd
+    }
+
+    String deploiementIntegration() {
+        new Selenium(this.script).go()
+
+        return "ok"
+    }
+
     String testIntegration() {
+
         new Selenium(this.script).go()
 
         return "ok"
     }
 
     String release() {
-        new Release(this.script).maven(maven)
+        Release release = new Release(this.script)
 
+        release.maven(maven)
+
+        return "ok"
+    }
+
+    static String deploiementProduction() {
         return "ok"
     }
 }
