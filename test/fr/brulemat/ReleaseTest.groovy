@@ -8,6 +8,7 @@ class ReleaseTest extends GroovyTestCase {
 
     // We're stubbing out a pipeline script. This one pretends to be
     // a script that's running against the master branch.
+    @SuppressWarnings("unused")
     class MasterPipelineScript {
         def version = ""
         def requestedFilename = ""
@@ -19,7 +20,6 @@ class ReleaseTest extends GroovyTestCase {
                 'WORKSPACE' : '.'
         ]
 
-        @SuppressWarnings("GroovyUnusedDeclaration")
         def readFile(file) {
             this.requestedFilename = file
             return "<project ><version>${this.version}</version></project>"
@@ -46,6 +46,9 @@ class ReleaseTest extends GroovyTestCase {
 
     void testExtractVersion() {
         def pipeline = new MasterPipelineScript()
-        new Release(pipeline).maven(new Maven(pipeline, "maven"))
+        def release = new Release(pipeline)
+        release.maven(new Maven(pipeline, "maven"))
+        assert "0.1.0" == release.releaseVersion
+        assert "0.2.0-SNAPSHOT" == release.nextVersion
     }
 }

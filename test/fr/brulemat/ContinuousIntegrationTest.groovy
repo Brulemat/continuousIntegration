@@ -6,6 +6,8 @@ class ContinuousIntegrationTest extends GroovyTestCase {
 
     // We're stubbing out a pipeline script. This one pretends to be
     // a script that's running against the master branch.
+
+    @SuppressWarnings("unused")
     class MasterPipelineScript {
         def version = "0.1.0-SNAPSHOT"
         def requestedFilename = ""
@@ -19,7 +21,6 @@ class ContinuousIntegrationTest extends GroovyTestCase {
                 'BRANCH_NAME': 'master'
         ]
 
-        @SuppressWarnings("GroovyUnusedDeclaration")
         def readFile(file) {
             this.requestedFilename = file
             return "<project ><version>${this.version}</version></project>"

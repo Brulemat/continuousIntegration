@@ -1,15 +1,11 @@
 package fr.brulemat.util;
 
-class Release implements Serializable {
+class HotFix implements Serializable {
     def script
-    String releaseVersion
+    String hotFixVersion
     String nextVersion
 
-    /**
-     *
-     * @param script
-     */
-    Release(script) {
+    HotFix(script) {
         this.script = script
     }
 
@@ -25,16 +21,15 @@ class Release implements Serializable {
      */
     def defineVersion(String currentVersion) {
         if (currentVersion.length() >= 9 && currentVersion.substring(currentVersion.length() - 9).equals('-SNAPSHOT')) {
-            releaseVersion = currentVersion.substring(0, currentVersion.length() - 9)
+            hotFixVersion = currentVersion.substring(0, currentVersion.length() - 9)
         }
-        String[] version = releaseVersion.tokenize(".")
-        version[version.length - 2] = version[version.length - 2].toInteger() + 1
-        version[version.length - 1] = 0
+        String[] version = hotFixVersion.tokenize(".")
+        version[version.length - 1] = version[version.length - 1].toInteger() + 1
         nextVersion = version.join('.').concat('-SNAPSHOT')
 
-        script.sh("echo release Version: ${releaseVersion}")
+        script.sh("echo hotfix Version: ${hotFixVersion}")
         script.sh("echo next Version: ${nextVersion}")
-        return releaseVersion
+        return hotFixVersion
     }
 
     def gitRelease() {

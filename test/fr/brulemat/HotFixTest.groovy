@@ -1,9 +1,10 @@
 package fr.brulemat
 
+import fr.brulemat.util.HotFix
 import fr.brulemat.util.Maven
 import org.codehaus.groovy.runtime.GStringImpl
 
-class MavenTest extends GroovyTestCase {
+class HotFixTest extends GroovyTestCase {
 
     // We're stubbing out a pipeline script. This one pretends to be
     // a script that's running against the master branch.
@@ -34,7 +35,7 @@ class MavenTest extends GroovyTestCase {
                 return ""
             }
             if (params.returnStdout == true && params.script == "grep --max-count=1 '<version>' ./pom.xml | awk -F '>' '{ print \$2 }' | awk -F '<' '{ print \$1 }'") {
-                return "0.1.0-SNAPSHOT"
+                return "0.1.1-SNAPSHOT"
             }
 
             return ""
@@ -46,19 +47,9 @@ class MavenTest extends GroovyTestCase {
 
     void testExtractVersion() {
         def pipeline = new MasterPipelineScript()
-
-        def expectedVersion = "0.1.0-SNAPSHOT"
-        def returnedVersion = new Maven(pipeline, "maven").extractVersion()
-
-        assert expectedVersion == returnedVersion
-    }
-
-    void testMvn() {
-        def pipeline = new MasterPipelineScript()
-
-        def expected = ""
-        def returned = new Maven(pipeline, "maven").mvn("clean")
-
-        assert expected == returned
+        def hotFix = new HotFix(pipeline)
+        hotFix.maven(new Maven(pipeline, "maven"))
+        assert "0.1.1" == hotFix.hotFixVersion
+        assert "0.1.2-SNAPSHOT" == hotFix.nextVersion
     }
 }
