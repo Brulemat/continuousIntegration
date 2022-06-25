@@ -18,7 +18,7 @@
     <repositories>
         <repository>
             <id>jenkins</id>
-            <url>http://repo.jenkins-ci.org/releases/</url>
+            <url>https://repo.jenkins-ci.org/releases/</url>
         </repository>
     </repositories>
 
@@ -26,7 +26,8 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.12</version>
+            <version>3.0.11</version>
+            <type>pom</type>
         </dependency>
 
         <dependency>
@@ -38,19 +39,19 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>script-security</artifactId>
-            <version>1.39</version>
+            <version>1175.v4b_d517d6db_f0</version>
         </dependency>
 
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-job</artifactId>
-            <version>2.21</version>
+            <version>1189.va_d37a_e9e4eda_</version>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
         </dependency>
     </dependencies>
 
